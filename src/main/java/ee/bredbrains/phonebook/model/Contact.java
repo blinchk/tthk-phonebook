@@ -73,4 +73,8 @@ public class Contact {
     public void setInstagram(String instagram) {
         this.instagram = instagram;
     }
+
+        public String getName() {
+        return firstName + " " + lastName;
+    }
 }

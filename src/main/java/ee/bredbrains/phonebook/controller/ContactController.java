@@ -5,13 +5,11 @@ import ee.bredbrains.phonebook.exception.UserNotFoundException;
 import ee.bredbrains.phonebook.model.Contact;
 import ee.bredbrains.phonebook.repository.ContactRepository;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/contact")
@@ -22,9 +20,23 @@ public class ContactController {
         this.repository = repository;
     }
 
+    public List<Contact> search(String query) {
+        Pattern pattern = Pattern.compile("[0-9]+");
+        if (pattern.matcher(query).matches()) {
+            return repository.findAllByPhone(query);
+        } else {
+            return repository.findAllByNameContains(query);
+        }
+    }
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Contact> all() {
-        return repository.findAll();
+    public List<Contact> all(@RequestParam() Optional<String> maybeQuery) {
+        if (maybeQuery.isPresent()) {
+            String query = maybeQuery.get();
+            return search(query);
+        } else {
+            return repository.findAll();
+        }
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
