@@ -21,7 +21,7 @@ public class ContactController {
     }
 
     public List<Contact> search(String query) {
-        Pattern pattern = Pattern.compile("[0-9]+");
+        Pattern pattern = Pattern.compile("(\\+)?[0-9]+$");
         if (pattern.matcher(query).matches()) {
             return repository.findAllByPhone(query);
         } else {
