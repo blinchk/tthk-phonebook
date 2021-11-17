@@ -3,6 +3,8 @@ package ee.bredbrains.phonebook.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Contact {
@@ -11,9 +13,11 @@ public class Contact {
     private Long id;
 
     @Column
+    @NotBlank(message = "First name cannot be blank")
     private String firstName;
 
     @Column
+    @NotBlank(message = "Last name cannot be blank")
     private String lastName;
 
     @Column
