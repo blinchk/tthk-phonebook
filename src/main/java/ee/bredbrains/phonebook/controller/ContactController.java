@@ -50,4 +50,9 @@ public class ContactController {
         Optional<Contact> contact = repository.findById(parsedId);
         return contact.orElseThrow(() -> new UserNotFoundException(parsedId));
     }
+
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public Contact add(Contact contact) {
+        return repository.save(contact);
+    }
 }
