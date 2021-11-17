@@ -1,5 +1,6 @@
 package ee.bredbrains.phonebook.controller;
 
+import ee.bredbrains.phonebook.exception.InvalidIdException;
 import ee.bredbrains.phonebook.exception.UserNotFoundException;
 import ee.bredbrains.phonebook.model.Contact;
 import ee.bredbrains.phonebook.repository.ContactRepository;
@@ -28,7 +29,12 @@ public class ContactController {
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Contact one(@PathVariable String id) {
-        long parsedId = Long.parseLong(id);
+        long parsedId;
+        try {
+            parsedId = Long.parseLong(id);
+        } catch (NumberFormatException e) {
+            throw new InvalidIdException(id);
+        }
         Optional<Contact> contact = repository.findById(parsedId);
         return contact.orElseThrow(() -> new UserNotFoundException(parsedId));
     }
