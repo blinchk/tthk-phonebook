@@ -5,17 +5,18 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import java.io.Serializable;
 
-@Table(name = "user")
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements Serializable {
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(nullable = false)
+    @GeneratedValue
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -34,11 +35,11 @@ public class User implements Serializable {
     @Column(nullable = false, unique = true)
     private String email;
 
-    public Long getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public String getPassword() {
+        return password;
     }
 }
