@@ -1,10 +1,15 @@
 <template>
   <v-app>
+    <v-navigation-drawer app clipped v-model="drawerOpen">
+      <h1>Nav</h1>
+    </v-navigation-drawer>
     <v-app-bar
       app
+      clipped-left
       color="primary"
       dark
     >
+      <v-app-bar-nav-icon @click.stop="drawerOpen = !drawerOpen" />
       <v-app-bar-title>
         Phonebook
       </v-app-bar-title>
@@ -22,7 +27,7 @@ export default {
   name: 'App',
 
   data: () => ({
-    //
+    drawerOpen: false
   })
 }
 </script>
