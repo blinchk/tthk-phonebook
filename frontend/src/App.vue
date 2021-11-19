@@ -3,7 +3,7 @@
     <v-navigation-drawer app clipped v-model="drawerOpen">
       <v-list>
         <v-list-item-group>
-          <v-list-item :to="item.to" v-for="item in nav" :key="item.to">
+          <v-list-item :to="item.to" v-for="(item, key) in nav" :key="key">
             <v-list-item-icon>
               <v-icon>
                 {{ item.icon }}
@@ -45,6 +45,10 @@ export default {
       title: 'Home',
       to: '/',
       icon: 'mdi-home'
+    }, {
+      title: 'Contacts',
+      to: '/contacts',
+      icon: 'mdi-contacts'
     }]
   })
 }
