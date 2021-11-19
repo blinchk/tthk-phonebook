@@ -1,7 +1,20 @@
 <template>
   <v-app>
     <v-navigation-drawer app clipped v-model="drawerOpen">
-      <h1>Nav</h1>
+      <v-list>
+        <v-list-item-group>
+          <v-list-item :to="item.to" v-for="item in nav" :key="item.to">
+            <v-list-item-icon>
+              <v-icon>
+                {{ item.icon }}
+              </v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>
+              {{ item.title }}
+            </v-list-item-title>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
     </v-navigation-drawer>
     <v-app-bar
       app
@@ -9,7 +22,7 @@
       color="primary"
       dark
     >
-      <v-app-bar-nav-icon @click.stop="drawerOpen = !drawerOpen" />
+      <v-app-bar-nav-icon @click.stop="drawerOpen = !drawerOpen"/>
       <v-app-bar-title>
         Phonebook
       </v-app-bar-title>
@@ -27,7 +40,12 @@ export default {
   name: 'App',
 
   data: () => ({
-    drawerOpen: false
+    drawerOpen: false,
+    nav: [{
+      title: 'Home',
+      to: '/',
+      icon: 'mdi-home'
+    }]
   })
 }
 </script>
