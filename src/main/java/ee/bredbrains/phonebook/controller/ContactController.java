@@ -30,10 +30,9 @@ public class ContactController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Contact> all(@RequestParam() Optional<String> maybeQuery) {
-        if (maybeQuery.isPresent()) {
-            String query = maybeQuery.get();
-            return search(query);
+    public List<Contact> all(@RequestParam() Optional<String> query) {
+        if (query.isPresent()) {;
+            return search(query.get());
         } else {
             return repository.findAll();
         }
@@ -52,7 +51,7 @@ public class ContactController {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Contact add(Contact contact) {
+    public Contact add(@RequestBody Contact contact) {
         return repository.save(contact);
     }
 }

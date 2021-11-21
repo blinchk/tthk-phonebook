@@ -3,36 +3,43 @@ package ee.bredbrains.phonebook.model;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
+@Table(name = "user", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "username"),
+        @UniqueConstraint(columnNames = "email")
+})
 public class User implements Serializable {
     @Id
     @Column(nullable = false)
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
+    @NotBlank
+    @Size(max = 32)
     private String username;
 
     @Column(nullable = false)
+    @NotBlank
     private String password;
 
     @Column(nullable = false)
+    @NotBlank
     private String firstName;
 
     @Column(nullable = false)
+    @NotBlank
     private String lastName;
 
     @Email
     @Column(nullable = false, unique = true)
+    @Size(max = 50)
     private String email;
 
     public String getUsername() {
