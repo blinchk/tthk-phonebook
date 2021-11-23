@@ -1,5 +1,6 @@
 package ee.bredbrains.phonebook.controller;
 
+import ee.bredbrains.phonebook.exception.auth.AuthorizationException;
 import ee.bredbrains.phonebook.model.User;
 import ee.bredbrains.phonebook.model.UserDetailsImpl;
 import ee.bredbrains.phonebook.model.payload.request.RegisterRequest;
@@ -9,6 +10,8 @@ import ee.bredbrains.phonebook.repository.UserRepository;
 import ee.bredbrains.phonebook.utils.auth.BasicAuthUtils;
 import ee.bredbrains.phonebook.utils.auth.JwtAuthUtils;
 import ee.bredbrains.phonebook.utils.validator.RegisterValidator;
+import org.apache.logging.log4j.util.Strings;
+import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,8 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
-@RestController
+@RestController()
 @RequestMapping("/auth")
 public class AuthController {
     private final UserRepository repository;
@@ -42,7 +44,11 @@ public class AuthController {
     @GetMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
     public JwtResponse login(HttpServletRequest request) {
         final String AUTHORIZATION_HEADER = "Authorization";
-        BasicAuthLogicCredentials credentials = BasicAuthUtils.decode(request.getHeader(AUTHORIZATION_HEADER));
+        String header = request.getHeader(AUTHORIZATION_HEADER);
+        if (Strings.isEmpty(header)) {
+            throw new AuthorizationException("Cannot authorize without Basic authentication.");
+        }
+        BasicAuthLogicCredentials credentials = BasicAuthUtils.decode(header);
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(credentials.getUsername(), credentials.getPassword())
@@ -57,7 +63,7 @@ public class AuthController {
                 userDetails.getEmail());
     }
 
-    @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/register")
     public String register(@RequestBody RegisterRequest registerRequest) {
         new RegisterValidator(repository).validate(registerRequest);
         User user = new User(registerRequest.getUsername(),
