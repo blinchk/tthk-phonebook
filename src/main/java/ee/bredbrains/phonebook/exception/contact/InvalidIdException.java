@@ -1,4 +1,4 @@
-package ee.bredbrains.phonebook.exception;
+package ee.bredbrains.phonebook.exception.contact;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

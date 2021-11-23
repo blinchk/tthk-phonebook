@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "bredbrains.phonebook.jwtSecret",
+      "type": "java.lang.String",
+      "description": "Description for bredbrains.phonebook.jwtSecret."
+  }
+] }

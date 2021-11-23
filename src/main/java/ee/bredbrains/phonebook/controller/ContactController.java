@@ -1,7 +1,7 @@
 package ee.bredbrains.phonebook.controller;
 
-import ee.bredbrains.phonebook.exception.InvalidIdException;
-import ee.bredbrains.phonebook.exception.UserNotFoundException;
+import ee.bredbrains.phonebook.exception.contact.InvalidIdException;
+import ee.bredbrains.phonebook.exception.user.UserNotFoundException;
 import ee.bredbrains.phonebook.model.Contact;
 import ee.bredbrains.phonebook.repository.ContactRepository;
 import org.springframework.http.MediaType;
@@ -31,7 +31,7 @@ public class ContactController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Contact> all(@RequestParam() Optional<String> query) {
-        if (query.isPresent()) {;
+        if (query.isPresent()) {
             return search(query.get());
         } else {
             return repository.findAll();
