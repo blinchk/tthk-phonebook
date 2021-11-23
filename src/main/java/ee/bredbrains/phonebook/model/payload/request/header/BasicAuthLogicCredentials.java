@@ -1,6 +1,8 @@
-package ee.bredbrains.phonebook.model.payload.request;
+package ee.bredbrains.phonebook.model.payload.request.header;
 
-public class LoginRequest extends Request {
+import ee.bredbrains.phonebook.model.payload.request.Request;
+
+public class BasicAuthLogicCredentials {
     private String username;
     private String password;
 
@@ -17,6 +19,11 @@ public class LoginRequest extends Request {
     }
 
     public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public BasicAuthLogicCredentials(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 }

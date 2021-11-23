@@ -1,4 +1,4 @@
-package ee.bredbrains.phonebook.utils;
+package ee.bredbrains.phonebook.utils.auth;
 
 import ee.bredbrains.phonebook.exception.auth.AuthenticationException;
 import ee.bredbrains.phonebook.model.UserDetailsImpl;
@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Component
-public class JwtUtils {
-    private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
+public class JwtAuthUtils {
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthUtils.class);
 
     @Value("${bredbrains.phonebook.jwtSecret}")
     private String jwtSecret;

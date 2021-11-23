@@ -2,11 +2,12 @@ package ee.bredbrains.phonebook.controller;
 
 import ee.bredbrains.phonebook.model.User;
 import ee.bredbrains.phonebook.model.UserDetailsImpl;
-import ee.bredbrains.phonebook.model.payload.request.LoginRequest;
 import ee.bredbrains.phonebook.model.payload.request.RegisterRequest;
+import ee.bredbrains.phonebook.model.payload.request.header.BasicAuthLogicCredentials;
 import ee.bredbrains.phonebook.model.payload.response.JwtResponse;
 import ee.bredbrains.phonebook.repository.UserRepository;
-import ee.bredbrains.phonebook.utils.JwtUtils;
+import ee.bredbrains.phonebook.utils.auth.BasicAuthUtils;
+import ee.bredbrains.phonebook.utils.auth.JwtAuthUtils;
 import ee.bredbrains.phonebook.utils.validator.RegisterValidator;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
@@ -17,33 +18,38 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
     private final UserRepository repository;
-    private final JwtUtils jwtUtils;
+    private final JwtAuthUtils jwtAuthUtils;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder encoder;
 
     public AuthController(UserRepository repository,
-                          JwtUtils jwtUtils,
+                          JwtAuthUtils jwtAuthUtils,
                           AuthenticationManager authenticationManager,
                           @Qualifier("passwordEncoder") PasswordEncoder encoder) {
         this.repository = repository;
-        this.jwtUtils = jwtUtils;
+        this.jwtAuthUtils = jwtAuthUtils;
         this.authenticationManager = authenticationManager;
         this.encoder = encoder;
     }
 
     @GetMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
-    public JwtResponse login(@RequestBody LoginRequest loginRequest) {
+    public JwtResponse login(HttpServletRequest request) {
+        final String AUTHORIZATION_HEADER = "Authorization";
+        BasicAuthLogicCredentials credentials = BasicAuthUtils.decode(request.getHeader(AUTHORIZATION_HEADER));
+
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
+                new UsernamePasswordAuthenticationToken(credentials.getUsername(), credentials.getPassword())
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
+        String jwt = jwtAuthUtils.generateJwtToken(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         return new JwtResponse(jwt,
                 userDetails.getId(),

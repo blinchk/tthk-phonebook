@@ -3,7 +3,7 @@ package ee.bredbrains.phonebook.config;
 import ee.bredbrains.phonebook.entrypoint.AuthEntryPointJwt;
 import ee.bredbrains.phonebook.filter.AuthTokenFilter;
 import ee.bredbrains.phonebook.service.UserDetailsServiceImpl;
-import ee.bredbrains.phonebook.utils.JwtUtils;
+import ee.bredbrains.phonebook.utils.auth.JwtAuthUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,19 +21,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsServiceImpl userDetailsService;
     private AuthEntryPointJwt unauthorizedHandler;
-    private JwtUtils jwtUtils;
+    private JwtAuthUtils jwtAuthUtils;
 
     public WebSecurityConfig(UserDetailsServiceImpl userDetailsService,
                              AuthEntryPointJwt unauthorizedHandler,
-                             JwtUtils jwtUtils) {
+                             JwtAuthUtils jwtAuthUtils) {
         this.unauthorizedHandler = unauthorizedHandler;
         this.userDetailsService = userDetailsService;
-        this.jwtUtils = jwtUtils;
+        this.jwtAuthUtils = jwtAuthUtils;
     }
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
-        return new AuthTokenFilter(jwtUtils, userDetailsService);
+        return new AuthTokenFilter(jwtAuthUtils, userDetailsService);
     }
 
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {

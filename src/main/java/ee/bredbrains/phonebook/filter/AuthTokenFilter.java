@@ -1,14 +1,11 @@
 package ee.bredbrains.phonebook.filter;
 
-import antlr.StringUtils;
-import ee.bredbrains.phonebook.model.UserDetailsImpl;
 import ee.bredbrains.phonebook.service.UserDetailsServiceImpl;
-import ee.bredbrains.phonebook.utils.JwtUtils;
+import ee.bredbrains.phonebook.utils.auth.JwtAuthUtils;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -19,11 +16,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class AuthTokenFilter extends OncePerRequestFilter {
-    private final JwtUtils jwtUtils;
+    private final JwtAuthUtils jwtAuthUtils;
     private final UserDetailsServiceImpl userDetailsService;
 
-    public AuthTokenFilter(JwtUtils jwtUtils, UserDetailsServiceImpl userDetailsService) {
-        this.jwtUtils = jwtUtils;
+    public AuthTokenFilter(JwtAuthUtils jwtAuthUtils, UserDetailsServiceImpl userDetailsService) {
+        this.jwtAuthUtils = jwtAuthUtils;
         this.userDetailsService = userDetailsService;
     }
 
@@ -33,8 +30,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         try {
             String jwt = parseJwt(request);
-            if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
-                String username = jwtUtils.getUsernameFromJwtToken(jwt);
+            if (jwt != null && jwtAuthUtils.validateJwtToken(jwt)) {
+                String username = jwtAuthUtils.getUsernameFromJwtToken(jwt);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
                         null,
