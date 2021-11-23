@@ -1,41 +1,45 @@
 package ee.bredbrains.phonebook.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.validation.constraints.Min;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import org.hibernate.validator.constraints.Length;
+
+import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
 @Entity
-public class Contact {
+@Table(name = "contact", uniqueConstraints = {@UniqueConstraint(columnNames = "id")})
+public class Contact implements Serializable {
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank(message = "First name cannot be empty")
+    @Length(min = 3, max = 256, message = "First name should be between 3 and 256 characters.")
     @Column
-    @NotBlank(message = "First name cannot be blank")
     private String firstName;
 
+    @NotBlank(message = "Last name cannot be empty")
+    @Length(min = 3, max = 256, message = "Last name should be between 3 and 256 characters.")
     @Column
-    @NotBlank(message = "Last name cannot be blank")
     private String lastName;
 
     @Column
     private String phone;
 
     @Column
+    @Email
     private String email;
 
     @Column
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String instagram;
-
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getFirstName() {
@@ -78,7 +82,8 @@ public class Contact {
         this.instagram = instagram;
     }
 
-        public String getName() {
+    @JsonIgnore
+    public String getFullName() {
         return firstName + " " + lastName;
     }
 }
