@@ -28,7 +28,7 @@ import { mapActions } from 'vuex'
 export default {
   name: 'Login',
   methods: {
-    ...mapActions(['authUser']),
+    ...mapActions('user', ['authUser']),
     signIn () {
       this.authUser(this.credentials)
     }
