@@ -1,12 +1,14 @@
 package ee.bredbrains.phonebook.controller;
 
 import ee.bredbrains.phonebook.exception.contact.InvalidIdException;
-import ee.bredbrains.phonebook.exception.user.UserNotFoundException;
+import ee.bredbrains.phonebook.exception.contact.ContactNotFoundException;
 import ee.bredbrains.phonebook.model.Contact;
 import ee.bredbrains.phonebook.repository.ContactRepository;
+import ee.bredbrains.phonebook.service.UserDetailsServiceImpl;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -15,9 +17,11 @@ import java.util.regex.Pattern;
 @RequestMapping("/contact")
 public class ContactController {
     private final ContactRepository repository;
+    private final UserDetailsServiceImpl userDetailsService;
 
-    public ContactController(ContactRepository repository) {
+    public ContactController(ContactRepository repository, UserDetailsServiceImpl userDetailsService) {
         this.repository = repository;
+        this.userDetailsService = userDetailsService;
     }
 
     public List<Contact> search(String query) {
@@ -47,7 +51,7 @@ public class ContactController {
             throw new InvalidIdException(id);
         }
         Optional<Contact> contact = repository.findById(parsedId);
-        return contact.orElseThrow(() -> new UserNotFoundException(parsedId));
+        return contact.orElseThrow(() -> new ContactNotFoundException(parsedId));
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
