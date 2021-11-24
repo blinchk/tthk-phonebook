@@ -2,8 +2,10 @@ package ee.bredbrains.phonebook.controller;
 
 import ee.bredbrains.phonebook.exception.contact.InvalidIdException;
 import ee.bredbrains.phonebook.exception.contact.ContactNotFoundException;
+import ee.bredbrains.phonebook.exception.user.UserNotFoundException;
 import ee.bredbrains.phonebook.model.Contact;
 import ee.bredbrains.phonebook.repository.ContactRepository;
+import ee.bredbrains.phonebook.repository.UserRepository;
 import ee.bredbrains.phonebook.service.UserDetailsServiceImpl;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +19,11 @@ import java.util.regex.Pattern;
 @RequestMapping("/contact")
 public class ContactController {
     private final ContactRepository repository;
-    private final UserDetailsServiceImpl userDetailsService;
+    private final UserRepository userRepository;
 
-    public ContactController(ContactRepository repository, UserDetailsServiceImpl userDetailsService) {
+    public ContactController(ContactRepository repository, UserRepository userRepository) {
         this.repository = repository;
-        this.userDetailsService = userDetailsService;
+        this.userRepository = userRepository;
     }
 
     public List<Contact> search(String query) {
@@ -55,7 +57,10 @@ public class ContactController {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Contact add(@RequestBody Contact contact) {
+    public Contact add(@RequestBody Contact contact, Principal principal) {
+        contact.setCreatedBy(userRepository
+                .findByUsername(principal.getName())
+                .orElseThrow(UserNotFoundException::new));
         return repository.save(contact);
     }
 }
