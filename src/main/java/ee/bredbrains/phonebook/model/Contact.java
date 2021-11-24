@@ -22,9 +22,7 @@ public class Contact implements Serializable {
     @Column
     private String firstName;
 
-    @NotBlank(message = "Last name cannot be empty")
-    @Length(min = 3, max = 256, message = "Last name should be between 3 and 256 characters.")
-    @Column
+    @Column(nullable = true)
     private String lastName;
 
     @Column
@@ -34,9 +32,11 @@ public class Contact implements Serializable {
     @Email
     private String email;
 
-    @Column
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String instagram;
+    @ManyToOne
+    private User createdBy;
+
+    @ManyToOne
+    private Group group;
 
     public Long getId() {
         return id;
@@ -74,16 +74,16 @@ public class Contact implements Serializable {
         this.email = email;
     }
 
-    public String getInstagram() {
-        return instagram;
-    }
-
-    public void setInstagram(String instagram) {
-        this.instagram = instagram;
-    }
-
     @JsonIgnore
     public String getFullName() {
         return firstName + " " + lastName;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
     }
 }
