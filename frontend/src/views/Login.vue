@@ -1,8 +1,8 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-col>
       <v-row class="justify-center">
-        <v-card min-width="500px">
+        <v-card max-width="500px" width="500px" flat>
           <v-card-title>
             Sign In
           </v-card-title>
