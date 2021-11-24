@@ -1,5 +1,7 @@
 package ee.bredbrains.phonebook.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -28,6 +30,7 @@ public class User implements Serializable {
     @Column(nullable = false)
     @Size(max = 120)
     @NotBlank
+    @JsonIgnore
     private String password;
 
     @Column(nullable = false)

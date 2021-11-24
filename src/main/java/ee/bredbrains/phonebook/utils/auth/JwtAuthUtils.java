@@ -1,6 +1,6 @@
 package ee.bredbrains.phonebook.utils.auth;
 
-import ee.bredbrains.phonebook.exception.auth.AuthenticationException;
+import ee.bredbrains.phonebook.exception.auth.AuthorizationException;
 import ee.bredbrains.phonebook.model.UserDetailsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,15 +49,15 @@ public class JwtAuthUtils {
 
             return true;
         } catch (SignatureException e) {
-            throw new AuthenticationException(String.format("Invalid JWT signature: %s", e.getMessage()));
+            throw new AuthorizationException(String.format("Invalid JWT signature: %s", e.getMessage()));
         } catch (MalformedJwtException e) {
-            throw new AuthenticationException(String.format("Invalid JWT token: %s", e.getMessage()));
+            throw new AuthorizationException(String.format("Invalid JWT token: %s", e.getMessage()));
         } catch (ExpiredJwtException e) {
-            throw new AuthenticationException(String.format("JWT token is expired: %s", e.getMessage()));
+            throw new AuthorizationException(String.format("JWT token is expired: %s", e.getMessage()));
         } catch (UnsupportedJwtException e) {
-            throw new AuthenticationException(String.format("JWT token is unsupported: %s", e.getMessage()));
+            throw new AuthorizationException(String.format("JWT token is unsupported: %s", e.getMessage()));
         } catch (IllegalArgumentException e) {
-            throw new AuthenticationException(String.format("JWT claims string is empty: %s", e.getMessage()));
+            throw new AuthorizationException(String.format("JWT claims string is empty: %s", e.getMessage()));
         }
     }
 }

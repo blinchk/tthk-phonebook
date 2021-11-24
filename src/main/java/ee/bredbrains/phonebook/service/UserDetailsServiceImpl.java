@@ -1,6 +1,5 @@
 package ee.bredbrains.phonebook.service;
 
-import ee.bredbrains.phonebook.model.User;
 import ee.bredbrains.phonebook.model.UserDetailsImpl;
 import ee.bredbrains.phonebook.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
