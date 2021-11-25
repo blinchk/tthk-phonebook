@@ -1,7 +1,6 @@
 package ee.bredbrains.phonebook.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -22,7 +21,7 @@ public class Contact implements Serializable {
     @Column
     private String firstName;
 
-    @Column()
+    @Column
     private String lastName;
 
     @Column
