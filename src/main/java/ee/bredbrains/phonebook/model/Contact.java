@@ -85,4 +85,12 @@ public class Contact implements Serializable {
     public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
 }
