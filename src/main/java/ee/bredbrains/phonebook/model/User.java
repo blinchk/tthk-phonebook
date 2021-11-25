@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 @NoArgsConstructor
 @Entity
-@Table(name = "user", uniqueConstraints = {
+@Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = "username"),
         @UniqueConstraint(columnNames = "email")
 })

@@ -4,15 +4,18 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "group")
+@Table(name = "groups", uniqueConstraints = {@UniqueConstraint(columnNames = "id")})
 public class Group {
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @Column
     private String title;
-    @OneToMany
-    private List<Contact> contact;
+
+    @OneToMany(mappedBy = "group")
+    private List<Contact> contacts;
 
     public Long getId() {
         return id;
@@ -30,7 +33,7 @@ public class Group {
         this.title = title;
     }
 
-    public List<Contact> getContact() {
-        return contact;
+    public List<Contact> getContacts() {
+        return contacts;
     }
 }

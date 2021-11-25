@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "contact", uniqueConstraints = {@UniqueConstraint(columnNames = "id")})
+@Table(name = "contacts", uniqueConstraints = {@UniqueConstraint(columnNames = "id")})
 public class Contact implements Serializable {
     @Id
     @Column(name = "id", nullable = false)
@@ -22,7 +22,7 @@ public class Contact implements Serializable {
     @Column
     private String firstName;
 
-    @Column(nullable = true)
+    @Column()
     private String lastName;
 
     @Column
@@ -32,10 +32,10 @@ public class Contact implements Serializable {
     @Email
     private String email;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     private User createdBy;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Group group;
 
     public Long getId() {
