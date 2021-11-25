@@ -1,7 +1,6 @@
 package ee.bredbrains.phonebook.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -12,7 +11,7 @@ import java.io.Serializable;
 
 @NoArgsConstructor
 @Entity
-@Table(name = "user", uniqueConstraints = {
+@Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = "username"),
         @UniqueConstraint(columnNames = "email")
 })

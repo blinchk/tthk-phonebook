@@ -1,7 +1,6 @@
 package ee.bredbrains.phonebook.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -10,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "contact", uniqueConstraints = {@UniqueConstraint(columnNames = "id")})
+@Table(name = "contacts", uniqueConstraints = {@UniqueConstraint(columnNames = "id")})
 public class Contact implements Serializable {
     @Id
     @Column(name = "id", nullable = false)
@@ -22,8 +21,6 @@ public class Contact implements Serializable {
     @Column
     private String firstName;
 
-    @NotBlank(message = "Last name cannot be empty")
-    @Length(min = 3, max = 256, message = "Last name should be between 3 and 256 characters.")
     @Column
     private String lastName;
 
@@ -34,9 +31,11 @@ public class Contact implements Serializable {
     @Email
     private String email;
 
-    @Column
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String instagram;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private User createdBy;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private Group group;
 
     public Long getId() {
         return id;
@@ -74,16 +73,24 @@ public class Contact implements Serializable {
         this.email = email;
     }
 
-    public String getInstagram() {
-        return instagram;
-    }
-
-    public void setInstagram(String instagram) {
-        this.instagram = instagram;
-    }
-
     @JsonIgnore
     public String getFullName() {
         return firstName + " " + lastName;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 }

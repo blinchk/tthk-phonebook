@@ -1,7 +1,5 @@
 package ee.bredbrains.phonebook.model.payload.request.header;
 
-import ee.bredbrains.phonebook.model.payload.request.Request;
-
 public class BasicAuthLogicCredentials {
     private String username;
     private String password;

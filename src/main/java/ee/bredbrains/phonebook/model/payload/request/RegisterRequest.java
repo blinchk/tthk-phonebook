@@ -1,7 +1,5 @@
 package ee.bredbrains.phonebook.model.payload.request;
 
-import ee.bredbrains.phonebook.model.payload.request.header.BasicAuthLogicCredentials;
-
 public class RegisterRequest extends Request {
     private String username;
     private String password;
