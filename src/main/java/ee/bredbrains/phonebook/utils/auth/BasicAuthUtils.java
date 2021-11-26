@@ -2,7 +2,6 @@ package ee.bredbrains.phonebook.utils.auth;
 
 import ee.bredbrains.phonebook.exception.auth.AuthorizationException;
 import ee.bredbrains.phonebook.model.payload.request.header.BasicAuthLogicCredentials;
-import org.apache.tomcat.websocket.AuthenticationException;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;

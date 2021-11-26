@@ -11,7 +11,6 @@ import ee.bredbrains.phonebook.utils.auth.BasicAuthUtils;
 import ee.bredbrains.phonebook.utils.auth.JwtAuthUtils;
 import ee.bredbrains.phonebook.utils.validator.RegisterValidator;
 import org.apache.logging.log4j.util.Strings;
-import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
