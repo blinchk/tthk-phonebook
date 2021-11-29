@@ -7,7 +7,8 @@ plugins {
 
 group = 'ee.bredbrains'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = '15'
+targetCompatibility = '15'
 
 configurations {
     compileOnly {
