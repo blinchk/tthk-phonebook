@@ -26,22 +26,11 @@ public class PhonebookApplication {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:8081")
+                        .allowedOrigins("https://phonebook.laus.me")
                         .allowedMethods("*")
                         .allowCredentials(false)
                         .maxAge(3600);
             }
         };
-    }
-
-    @Bean
-    public CommonsRequestLoggingFilter requestLoggingFilter() {
-        int MAX_PAYLOAD_LENGTH = 64000;
-        CommonsRequestLoggingFilter loggingFilter = new CommonsRequestLoggingFilter();
-        loggingFilter.setIncludeClientInfo(true);
-        loggingFilter.setIncludeQueryString(true);
-        loggingFilter.setIncludePayload(true);
-        loggingFilter.setMaxPayloadLength(MAX_PAYLOAD_LENGTH);
-        return loggingFilter;
     }
 }
