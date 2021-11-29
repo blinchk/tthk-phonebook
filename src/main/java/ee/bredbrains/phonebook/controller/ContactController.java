@@ -2,10 +2,8 @@ package ee.bredbrains.phonebook.controller;
 
 import ee.bredbrains.phonebook.exception.contact.ContactNotFoundException;
 import ee.bredbrains.phonebook.exception.contact.InvalidIdException;
-import ee.bredbrains.phonebook.exception.user.UserNotFoundException;
 import ee.bredbrains.phonebook.model.Contact;
 import ee.bredbrains.phonebook.repository.ContactRepository;
-import ee.bredbrains.phonebook.repository.UserRepository;
 import ee.bredbrains.phonebook.service.ContactService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -20,17 +18,14 @@ import java.util.regex.Pattern;
 public class ContactController {
     private final ContactRepository repository;
     private final ContactService service;
-    private final UserRepository userRepository;
 
-    public ContactController(ContactRepository repository, ContactService service, UserRepository userRepository) {
+    public ContactController(ContactRepository repository, ContactService service) {
         this.repository = repository;
         this.service = service;
-        this.userRepository = userRepository;
     }
 
-    public List<Contact> search(String query, String username) {
+    public List<Contact> search(String query) {
         Pattern pattern = Pattern.compile("(\\+)?[0-9]+$");
-        service.setUsername(username);
         if (pattern.matcher(query).matches()) {
             return service.findAllByPhone(query);
         } else {
@@ -40,10 +35,10 @@ public class ContactController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Contact> all(@RequestParam() Optional<String> query, Principal principal) {
-        service.setUsername(principal.getName());
+        service.findCurrentUser(principal);
         if (query.isPresent()) {
             System.out.println(query.get());
-            return search(query.get(), principal.getName());
+            return search(query.get());
         } else {
             return service.findAll();
         }
@@ -63,9 +58,13 @@ public class ContactController {
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Contact add(@RequestBody Contact contact, Principal principal) {
-        contact.setCreatedBy(userRepository
-                .findByUsername(principal.getName())
-                .orElseThrow(UserNotFoundException::new));
-        return repository.save(contact);
+        service.findCurrentUser(principal);
+        return service.save(contact);
+    }
+
+    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public Contact update(@RequestBody Contact contact, Principal principal) {
+        service.findCurrentUser(principal);
+        return service.update(contact);
     }
 }
