@@ -48,13 +48,6 @@ public class ContactService {
         return contactRepository.findAllByCreatedBy_UsernameAndPhoneContains(currentUser.getUsername(), phone);
     }
 
-    public Contact update(Contact contact) {
-        if (!Objects.equals(contactRepository.getById(contact.getId()).getCreatedBy().getUsername(), currentUser.getUsername())) {
-            throw new PermissionException();
-        }
-        return contactRepository.save(contact);
-    }
-
     public Contact save(Contact contact) {
         contact.setCreatedBy(currentUser);
         return contactRepository.save(contact);

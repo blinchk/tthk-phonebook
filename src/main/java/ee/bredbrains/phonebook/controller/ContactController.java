@@ -61,10 +61,4 @@ public class ContactController {
         service.findCurrentUser(principal);
         return service.save(contact);
     }
-
-    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Contact update(@RequestBody Contact contact, Principal principal) {
-        service.findCurrentUser(principal);
-        return service.update(contact);
-    }
 }
