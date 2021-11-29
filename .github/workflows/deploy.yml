@@ -1,0 +1,21 @@
+name: Deploy to dedicated hosting
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Deployment
+      uses: vitalyliber/dokku-github-action@v6.2
+      env:
+        PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+        HOST: laus.me
+        PROJECT: phonebook-api
+        APP_CONFIG: ${{ secrets.APP_CONFIG }}
