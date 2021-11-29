@@ -1,5 +1,7 @@
 package ee.bredbrains.phonebook.model.payload.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 public class JwtResponse {
     private final String type = "Bearer";
     private String token;
@@ -8,6 +10,7 @@ public class JwtResponse {
     private String email;
     private String firstName;
     private String lastName;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String instagram;
 
     public JwtResponse(String token, Long id, String username, String email) {
