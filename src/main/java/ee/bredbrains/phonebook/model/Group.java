@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "groups", uniqueConstraints = {@UniqueConstraint(columnNames = "id")})
+@Table(name = "contacts_groups", uniqueConstraints = {@UniqueConstraint(columnNames = "id")})
 public class Group {
     @Id
     @Column(name = "id", nullable = false)
