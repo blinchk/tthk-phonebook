@@ -56,10 +56,14 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtAuthUtils.generateJwtToken(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        User user = repository.getById(userDetails.getId());
         return new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
-                userDetails.getEmail());
+                userDetails.getEmail(),
+                user.getFirstName(),
+                user.getLastName()
+        );
     }
 
     @PostMapping(value = "/register")

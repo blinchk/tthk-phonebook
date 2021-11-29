@@ -1,14 +1,17 @@
 package ee.bredbrains.phonebook.model.payload.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 public class JwtResponse {
     private final String type = "Bearer";
     private String token;
     private Long id;
     private String username;
     private String email;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String firstName;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String lastName;
-    private String instagram;
 
     public JwtResponse(String token, Long id, String username, String email) {
         this.token = token;
@@ -24,16 +27,6 @@ public class JwtResponse {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
-    }
-
-    public JwtResponse(String token, Long id, String username, String email, String firstName, String lastName, String instagram) {
-        this.token = token;
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.instagram = instagram;
     }
 
     public String getToken() {
@@ -86,13 +79,5 @@ public class JwtResponse {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getInstagram() {
-        return instagram;
-    }
-
-    public void setInstagram(String instagram) {
-        this.instagram = instagram;
     }
 }
