@@ -26,7 +26,7 @@ public class PhonebookApplication {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("https://phonebook.laus.me")
+                        .allowedOrigins("*")
                         .allowedMethods("*")
                         .allowCredentials(false)
                         .maxAge(3600);
