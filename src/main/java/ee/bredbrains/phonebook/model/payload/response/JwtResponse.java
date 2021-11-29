@@ -8,10 +8,10 @@ public class JwtResponse {
     private Long id;
     private String username;
     private String email;
-    private String firstName;
-    private String lastName;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String instagram;
+    private String firstName;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String lastName;
 
     public JwtResponse(String token, Long id, String username, String email) {
         this.token = token;
@@ -27,16 +27,6 @@ public class JwtResponse {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
-    }
-
-    public JwtResponse(String token, Long id, String username, String email, String firstName, String lastName, String instagram) {
-        this.token = token;
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.instagram = instagram;
     }
 
     public String getToken() {
@@ -89,13 +79,5 @@ public class JwtResponse {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getInstagram() {
-        return instagram;
-    }
-
-    public void setInstagram(String instagram) {
-        this.instagram = instagram;
     }
 }
