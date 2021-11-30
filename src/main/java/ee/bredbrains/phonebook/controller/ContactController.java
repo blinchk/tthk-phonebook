@@ -3,6 +3,8 @@ package ee.bredbrains.phonebook.controller;
 import ee.bredbrains.phonebook.exception.contact.ContactNotFoundException;
 import ee.bredbrains.phonebook.exception.contact.InvalidIdException;
 import ee.bredbrains.phonebook.model.Contact;
+import ee.bredbrains.phonebook.model.payload.response.success.contact.DeleteContactSuccessMessage;
+import ee.bredbrains.phonebook.model.payload.response.success.SuccessMessage;
 import ee.bredbrains.phonebook.repository.ContactRepository;
 import ee.bredbrains.phonebook.service.ContactService;
 import org.springframework.http.MediaType;
@@ -24,12 +26,20 @@ public class ContactController {
         this.service = service;
     }
 
-    public List<Contact> search(String query) {
+    private List<Contact> search(String query) {
         Pattern pattern = Pattern.compile("(\\+)?[0-9]+$");
         if (pattern.matcher(query).matches()) {
             return service.findAllByPhone(query);
         } else {
             return service.findAllByFirstNameStartsWith(query);
+        }
+    }
+
+    private Long parseId(String stringId) throws InvalidIdException {
+        try {
+            return Long.parseLong(stringId);
+        } catch (NumberFormatException e) {
+            throw new InvalidIdException(stringId);
         }
     }
 
@@ -46,19 +56,22 @@ public class ContactController {
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Contact one(@PathVariable String id) {
-        long parsedId;
-        try {
-            parsedId = Long.parseLong(id);
-        } catch (NumberFormatException e) {
-            throw new InvalidIdException(id);
-        }
+        Long parsedId = parseId(id);
         Optional<Contact> contact = repository.findById(parsedId);
         return contact.orElseThrow(() -> new ContactNotFoundException(parsedId));
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Contact add(@RequestBody Contact contact, Principal principal) {
+    public Contact save(@RequestBody Contact contact, Principal principal) {
         service.findCurrentUser(principal);
         return service.save(contact);
+    }
+
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public SuccessMessage delete(@PathVariable String id, Principal principal) {
+        service.findCurrentUser(principal);
+        Long parsedId = parseId(id);
+        service.delete(parsedId);
+        return new DeleteContactSuccessMessage(parsedId);
     }
 }
