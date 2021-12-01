@@ -1,6 +1,9 @@
 package ee.bredbrains.phonebook.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -31,10 +34,11 @@ public class Contact implements Serializable {
     @Email
     private String email;
 
-    @ManyToOne(cascade = {CascadeType.MERGE})
+    @ManyToOne
     private User createdBy;
 
-    @ManyToOne(cascade = {CascadeType.MERGE})
+    @ManyToOne
+    @JsonIgnoreProperties("contacts")
     private Group group;
 
     public Long getId() {
