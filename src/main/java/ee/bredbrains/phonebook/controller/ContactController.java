@@ -7,9 +7,11 @@ import ee.bredbrains.phonebook.model.payload.response.success.contact.DeleteCont
 import ee.bredbrains.phonebook.model.payload.response.success.SuccessMessage;
 import ee.bredbrains.phonebook.repository.ContactRepository;
 import ee.bredbrains.phonebook.service.ContactService;
+import ee.bredbrains.phonebook.utils.EntityUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.parser.Entity;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
@@ -35,14 +37,6 @@ public class ContactController {
         }
     }
 
-    private Long parseId(String stringId) throws InvalidIdException {
-        try {
-            return Long.parseLong(stringId);
-        } catch (NumberFormatException e) {
-            throw new InvalidIdException(stringId);
-        }
-    }
-
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Contact> all(@RequestParam() Optional<String> query, Principal principal) {
         service.findCurrentUser(principal);
@@ -56,7 +50,7 @@ public class ContactController {
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Contact one(@PathVariable String id) {
-        Long parsedId = parseId(id);
+        Long parsedId = EntityUtils.parseId(id);
         Optional<Contact> contact = repository.findById(parsedId);
         return contact.orElseThrow(() -> new ContactNotFoundException(parsedId));
     }
@@ -70,7 +64,7 @@ public class ContactController {
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public SuccessMessage delete(@PathVariable String id, Principal principal) {
         service.findCurrentUser(principal);
-        Long parsedId = parseId(id);
+        Long parsedId = EntityUtils.parseId(id);
         service.delete(parsedId);
         return new DeleteContactSuccessMessage(parsedId);
     }
