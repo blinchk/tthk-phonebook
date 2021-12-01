@@ -1,4 +1,4 @@
-package ee.bredbrains.phonebook.model.payload.response.success.contact;
+package ee.bredbrains.phonebook.model.payload.response.success;
 
 import ee.bredbrains.phonebook.model.payload.response.success.SuccessMessage;
 

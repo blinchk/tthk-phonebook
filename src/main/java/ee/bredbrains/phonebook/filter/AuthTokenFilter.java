@@ -1,6 +1,6 @@
 package ee.bredbrains.phonebook.filter;
 
-import ee.bredbrains.phonebook.service.UserDetailsServiceImpl;
+import ee.bredbrains.phonebook.service.auth.UserDetailsServiceImpl;
 import ee.bredbrains.phonebook.utils.auth.JwtAuthUtils;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
