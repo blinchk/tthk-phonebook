@@ -2,7 +2,7 @@ package ee.bredbrains.phonebook.config;
 
 import ee.bredbrains.phonebook.entrypoint.AuthEntryPointJwt;
 import ee.bredbrains.phonebook.filter.AuthTokenFilter;
-import ee.bredbrains.phonebook.service.UserDetailsServiceImpl;
+import ee.bredbrains.phonebook.service.auth.UserDetailsServiceImpl;
 import ee.bredbrains.phonebook.utils.auth.JwtAuthUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package ee.bredbrains.phonebook.service;
+package ee.bredbrains.phonebook.service.auth;
 
 import ee.bredbrains.phonebook.model.UserDetailsImpl;
 import ee.bredbrains.phonebook.repository.UserRepository;
