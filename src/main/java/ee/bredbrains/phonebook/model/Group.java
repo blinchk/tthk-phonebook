@@ -14,7 +14,7 @@ public class Group {
     @Column
     private String title;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = {CascadeType.MERGE})
     private User createdBy;
 
     @OneToMany(mappedBy = "group")
