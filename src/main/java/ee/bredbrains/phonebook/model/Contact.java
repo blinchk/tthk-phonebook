@@ -1,6 +1,7 @@
 package ee.bredbrains.phonebook.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -34,6 +35,7 @@ public class Contact implements Serializable {
     @ManyToOne(cascade = {CascadeType.MERGE})
     private User createdBy;
 
+    @JsonManagedReference
     @ManyToOne(cascade = {CascadeType.MERGE})
     private Group group;
 

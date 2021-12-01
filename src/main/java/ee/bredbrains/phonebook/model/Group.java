@@ -1,5 +1,7 @@
 package ee.bredbrains.phonebook.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -17,6 +19,7 @@ public class Group {
     @ManyToOne(cascade = {CascadeType.MERGE})
     private User createdBy;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "group")
     private List<Contact> contacts;
 
