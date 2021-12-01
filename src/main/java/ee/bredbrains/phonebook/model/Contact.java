@@ -31,10 +31,10 @@ public class Contact implements Serializable {
     @Email
     private String email;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = {CascadeType.MERGE})
     private User createdBy;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = {CascadeType.MERGE})
     private Group group;
 
     public Long getId() {
