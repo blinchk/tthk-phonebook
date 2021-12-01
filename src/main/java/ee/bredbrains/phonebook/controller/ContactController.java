@@ -1,9 +1,8 @@
 package ee.bredbrains.phonebook.controller;
 
-import ee.bredbrains.phonebook.exception.contact.ContactNotFoundException;
-import ee.bredbrains.phonebook.exception.contact.InvalidIdException;
+import ee.bredbrains.phonebook.exception.contact.EntityNotFoundException;
 import ee.bredbrains.phonebook.model.Contact;
-import ee.bredbrains.phonebook.model.payload.response.success.contact.DeleteContactSuccessMessage;
+import ee.bredbrains.phonebook.model.payload.response.success.DeleteContactSuccessMessage;
 import ee.bredbrains.phonebook.model.payload.response.success.SuccessMessage;
 import ee.bredbrains.phonebook.repository.ContactRepository;
 import ee.bredbrains.phonebook.service.ContactService;
@@ -11,11 +10,8 @@ import ee.bredbrains.phonebook.utils.EntityUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.parser.Entity;
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
-import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/contact")
@@ -28,31 +24,16 @@ public class ContactController {
         this.service = service;
     }
 
-    private List<Contact> search(String query) {
-        Pattern pattern = Pattern.compile("(\\+)?[0-9]+$");
-        if (pattern.matcher(query).matches()) {
-            return service.findAllByPhone(query);
-        } else {
-            return service.findAllByFirstNameStartsWith(query);
-        }
-    }
-
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Contact> all(@RequestParam() Optional<String> query, Principal principal) {
+    public List<Contact> all(Principal principal) {
         service.findCurrentUser(principal);
-        if (query.isPresent()) {
-            System.out.println(query.get());
-            return search(query.get());
-        } else {
-            return service.findAll();
-        }
+        return service.findAll();
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Contact one(@PathVariable String id) {
         Long parsedId = EntityUtils.parseId(id);
-        Optional<Contact> contact = repository.findById(parsedId);
-        return contact.orElseThrow(() -> new ContactNotFoundException(parsedId));
+        return repository.findById(parsedId).orElseThrow(() -> new EntityNotFoundException(parsedId));
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)

@@ -14,6 +14,9 @@ public class Group {
     @Column
     private String title;
 
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private User createdBy;
+
     @OneToMany(mappedBy = "group")
     private List<Contact> contacts;
 
@@ -35,5 +38,13 @@ public class Group {
 
     public List<Contact> getContacts() {
         return contacts;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
     }
 }
