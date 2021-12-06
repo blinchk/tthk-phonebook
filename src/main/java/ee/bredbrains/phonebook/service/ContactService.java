@@ -35,11 +35,4 @@ public class ContactService extends AuthenticatedService<ContactRepository, Cont
         }
         repository.delete(contact);
     }
-
-    public Contact saveShared(Long id) {
-        Contact contact = repository.findById(id).orElseThrow(() -> new EntityNotFoundException(id));
-        contact.setId(null);
-        contact.setCreatedBy(currentUser);
-        return super.save(contact);
-    }
 }

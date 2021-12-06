@@ -51,10 +51,4 @@ public class ContactController {
         return new DeleteContactSuccessMessage(parsedId);
     }
 
-    @PostMapping(value = "/share/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Contact sharedSave(@PathVariable String id, Principal principal) {
-        service.findCurrentUser(principal);
-        Long parsedId = EntityUtils.parseId(id);
-        return service.saveShared(parsedId);
-    }
 }
