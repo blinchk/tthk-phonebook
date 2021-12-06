@@ -10,6 +10,7 @@ import ee.bredbrains.phonebook.utils.EntityUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.attribute.standard.Media;
 import java.security.Principal;
 import java.util.List;
 
@@ -48,5 +49,12 @@ public class ContactController {
         Long parsedId = EntityUtils.parseId(id);
         service.delete(parsedId);
         return new DeleteContactSuccessMessage(parsedId);
+    }
+
+    @PostMapping(value = "/share/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Contact sharedSave(@PathVariable String id, Principal principal) {
+        service.findCurrentUser(principal);
+        Long parsedId = EntityUtils.parseId(id);
+        return service.saveShared(parsedId);
     }
 }
