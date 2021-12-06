@@ -2,8 +2,8 @@ package ee.bredbrains.phonebook.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonIgnoreType;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -12,6 +12,8 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "contacts", uniqueConstraints = {@UniqueConstraint(columnNames = "id")})
 public class Contact implements Serializable {
     @Id
@@ -100,5 +102,21 @@ public class Contact implements Serializable {
 
     public void setGroup(Group group) {
         this.group = group;
+    }
+
+    public Contact(String firstName, String lastName, String phone, String email, Group group) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.email = email;
+        this.group = group;
+    }
+
+    public static Contact of(Contact contact) {
+        return new Contact(contact.getFirstName(),
+                contact.getLastName(),
+                contact.getPhone(),
+                contact.getEmail(),
+                contact.getGroup());
     }
 }

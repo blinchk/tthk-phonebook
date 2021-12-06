@@ -49,4 +49,11 @@ public class GroupController {
         service.delete(parsedId);
         return new DeleteGroupSuccessMessage(parsedId);
     }
+
+    @PostMapping(value = "/share/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Group sharedSave(@PathVariable String id, Principal principal) {
+        service.findCurrentUser(principal);
+        Long parsedId = EntityUtils.parseId(id);
+        return service.sharedSave(parsedId);
+    }
 }

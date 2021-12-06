@@ -1,12 +1,15 @@
 package ee.bredbrains.phonebook.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "contacts_groups", uniqueConstraints = {@UniqueConstraint(columnNames = "id")})
 public class Group {
     @Id
@@ -50,5 +53,13 @@ public class Group {
 
     public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public Group(String title) {
+        this.title = title;
+    }
+
+    public static Group of(Group group) {
+        return new Group(group.getTitle());
     }
 }
